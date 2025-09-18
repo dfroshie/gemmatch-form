@@ -85,7 +85,8 @@
       const profile = Object.fromEntries(formData.entries());
 
       try {
-        const response = await fetch('https://gemstatejobmatcher.gemstatetechnology.workers.dev/', {
+        const response = await fetch('const response = await fetch('https://gemstatejobmatcher.gemstatetechnology.workers.dev', {
+, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(profile)
