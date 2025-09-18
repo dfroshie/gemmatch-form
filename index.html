@@ -82,35 +82,35 @@
   <div id="matchResults"></div>
 
   <script>
-  document.getElementById('jobProfileForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const profile = Object.fromEntries(formData.entries());
+    document.getElementById('jobProfileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const profile = Object.fromEntries(formData.entries());
 
-    try {
-      const response = await fetch('https://gemstatejobmatcher.gemstatetechnology.workers.dev', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profile)
-      });
+      try {
+        const response = await fetch('https://gemstatejobmatcher.gemstatetechnology.workers.dev', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(profile)
+        });
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+
+        const matches = await response.json();
+        document.getElementById('matchResults').innerHTML = matches.map(job =>
+          `<div>
+            <strong>${job.title}</strong> at ${job.company}<br>
+            ${job.reason}<br>
+            <a href="${job.url}" target="_blank">🔗 View Job Posting</a>
+          </div><hr>`
+        ).join('');
+      } catch (err) {
+        document.getElementById('matchResults').innerHTML =
+          `<div style="color:red;">Error: ${err.message}</div>`;
       }
-
-      const matches = await response.json();
-      document.getElementById('matchResults').innerHTML = matches.map(job =>
-        `<div>
-          <strong>${job.title}</strong> at ${job.company}<br>
-          ${job.reason}<br>
-          <a href="${job.url}" target="_blank">🔗 View Job Posting</a>
-        </div><hr>`
-      ).join('');
-    } catch (err) {
-      document.getElementById('matchResults').innerHTML =
-        `<div style="color:red;">Error: ${err.message}</div>`;
-    }
-  });
+    });
   </script>
 
 </body>
