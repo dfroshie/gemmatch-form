@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GemMatch AI – Find Your Next Role</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    #matchResults {
+      margin-top: 30px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>GemMatch AI</h1>
+  <p>Submit your profile and get matched to top job opportunities instantly. Subscribe to unlock weekly updates and full match details.</p>
+
+  <form id="jobProfileForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location">
+
+    <label for="skills">Top Skills:</label>
+    <input type="text" id="skills" name="skills" placeholder="e.g. Python, Marketing, Leadership">
+
+    <label for="goals">Career Goals:</label>
+    <textarea id="goals" name="goals" rows="3" placeholder="What kind of role are you seeking?"></textarea>
+
+    <label for="experience">Experience Summary:</label>
+    <textarea id="experience" name="experience" rows="3" placeholder="Brief summary of your background"></textarea>
+
+    <button type="submit">Get My Matches</button>
+  </form>
+
+  <div id="matchResults"></div>
+
+  <script>
+    document.getElementById('jobProfileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const profile = Object.fromEntries(formData.entries());
+
+      const response = await fetch('https://your-worker-url.workers.dev/match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile)
+      });
+
+      const matches = await response.json();
+      document.getElementById('matchResults').innerHTML = matches.map(job =>
+        `<div><strong>${job.title}</strong> at ${job.company}<br>${job.reason}</div><hr>`
+      ).join('');
+    });
+  </script>
+
+</body>
+</html>
