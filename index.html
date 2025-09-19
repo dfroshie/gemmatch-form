@@ -100,12 +100,14 @@
 
         const matches = await response.json();
         document.getElementById('matchResults').innerHTML = matches.map(job =>
-          `<div>
-            <strong>${job.title}</strong> at ${job.company}<br>
-            ${job.reason}<br>
-            <a href="${job.url}" target="_blank">🔗 View Job Posting</a>
-          </div><hr>`
-        ).join('');
+  `<div>
+    <strong>${job.title}</strong> at ${job.company}<br>
+    ${job.reason}<br>
+    ${job.matchedSkills.length > 0 ? `<p><strong>Matched Skills:</strong> ${job.matchedSkills.map(s => `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;margin-right:4px;">${s}</span>`).join('')}</p>` : ''}
+    <a href="${job.url}" target="_blank">🔗 View Job Posting</a>
+  </div><hr>`
+).join('');
+
       } catch (err) {
         document.getElementById('matchResults').innerHTML =
           `<div style="color:red;">Error: ${err.message}</div>`;
